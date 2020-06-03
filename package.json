@@ -1,6 +1,6 @@
 {
   "name": "react-native-schedule-selector",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "A React Native version of the mobile-friendly when2meet-style grid-based schedule selector",
   "repository": {
     "type": "git",
@@ -16,14 +16,12 @@
   "license": "MIT",
   "scripts": {
     "prepublish": "yarn build",
-    "postpublish": "yarn docs:deploy",
     "build": "yarn lib:build",
     "lint": "eslint src/**/*.{js,jsx} --quiet",
     "format": "prettier --write \"src/**/*.{js,jsx}\"",
     "cover": "jest --coverage && cat ./coverage/lcov.info | coveralls",
     "test": "jest",
-    "lib:build": "babel src/lib -d dist/lib",
-    "docs:deploy": "yarn docs:build && surge dist/docs --domain react-schedule-selector.surge.sh"
+    "lib:build": "babel src/lib -d dist/lib"
   },
   "engines": {
     "node": ">8.0"
