@@ -1,7 +1,5 @@
-// @flow
-
-import * as React from 'react'
-import styled from 'styled-components'
+import React from 'react'
+import styled from 'styled-components/native'
 
 // Import only the methods we need from date-fns in order to keep build size small
 import addHours from 'date-fns/add_hours'
@@ -14,39 +12,38 @@ import { Text, Subtitle } from './typography'
 import colors from './colors'
 import selectionSchemes from './selection-schemes'
 
-const formatHour = (hour: number): string => {
+const formatHour = (hour) => {
   const h = hour === 0 || hour === 12 || hour === 24 ? 12 : hour % 12
   const abb = hour < 12 || hour === 24 ? 'am' : 'pm'
   return `${h}${abb}`
 }
 
-const Wrapper = styled.div`
+const Wrapper = styled.View`
   display: flex;
   align-items: center;
   width: 100%;
-  user-select: none;
 `
 
-const Grid = styled.div`
+const Grid = styled.View`
   display: flex;
   flex-direction: row;
   align-items: stretch;
   width: 100%;
 `
 
-const Column = styled.div`
+const Column = styled.View`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   flex-grow: 1;
 `
 
-export const GridCell = styled.div`
+export const GridCell = styled.View`
   margin: ${props => props.margin}px;
   touch-action: none;
 `
 
-const DateCell = styled.div`
+const DateCell = styled.View`
   width: 100%;
   height: 25px;
   background-color: ${props => (props.selected ? props.selectedColor : props.unselectedColor)};
@@ -63,7 +60,7 @@ const DateLabel = styled(Subtitle)`
   }
 `
 
-const TimeLabelCell = styled.div`
+const TimeLabelCell = styled.View`
   position: relative;
   display: block;
   width: 100%;

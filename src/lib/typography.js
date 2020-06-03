@@ -1,9 +1,9 @@
 // @flow
 
-import styled from 'styled-components'
+import styled from 'styled-components/native'
 import colors from './colors'
 
-export const Subtitle = styled.h2`
+export const Subtitle = styled.View`
   font-size: 20px;
   font-weight: 400;
   color: ${colors.black};
@@ -14,7 +14,7 @@ export const Subtitle = styled.h2`
   }
 `
 
-export const Text = styled.p`
+export const Text = styled.View`
   font-size: 14px;
   font-weight: 300;
   line-height: ${14 * 1.37}px;

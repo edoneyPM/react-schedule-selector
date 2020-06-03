@@ -1,11 +1,10 @@
 {
-  "name": "react-schedule-selector",
-  "version": "1.0.3",
-  "description": "A mobile-friendly when2meet-style grid-based schedule selector",
-  "author": "Bibek Ghimire",
+  "name": "react-native-schedule-selector",
+  "version": "2.0.4",
+  "description": "A React Native version of the mobile-friendly when2meet-style grid-based schedule selector",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bibekg/react-schedule-selector.git"
+    "url": "https://github.com/edoneyPM/react-schedule-selector.git"
   },
   "keywords": [
     "react",
@@ -18,14 +17,12 @@
   "scripts": {
     "prepublish": "yarn build",
     "postpublish": "yarn docs:deploy",
-    "build": "yarn lib:build && yarn docs:build",
+    "build": "yarn lib:build",
     "lint": "eslint src/**/*.{js,jsx} --quiet",
     "format": "prettier --write \"src/**/*.{js,jsx}\"",
     "cover": "jest --coverage && cat ./coverage/lcov.info | coveralls",
     "test": "jest",
     "lib:build": "babel src/lib -d dist/lib",
-    "docs:dev": "parcel serve src/docs/index.html -d dev/docs",
-    "docs:build": "parcel build src/docs/index.html -d dist/docs",
     "docs:deploy": "yarn docs:build && surge dist/docs --domain react-schedule-selector.surge.sh"
   },
   "engines": {

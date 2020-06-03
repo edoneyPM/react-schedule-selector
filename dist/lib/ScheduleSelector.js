@@ -5,11 +5,11 @@ exports.preventScroll = exports.GridCell = undefined;
 
 var _react = require('react');
 
-var React = _interopRequireWildcard(_react);
+var _react2 = _interopRequireDefault(_react);
 
-var _styledComponents = require('styled-components');
+var _native = require('styled-components/native');
 
-var _styledComponents2 = _interopRequireDefault(_styledComponents);
+var _native2 = _interopRequireDefault(_native);
 
 var _add_hours = require('date-fns/add_hours');
 
@@ -43,8 +43,6 @@ var _selectionSchemes2 = _interopRequireDefault(_selectionSchemes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -60,50 +58,50 @@ var formatHour = function formatHour(hour) {
   return '' + h + abb;
 };
 
-var Wrapper = (0, _styledComponents2.default)('div').withConfig({
+var Wrapper = (0, _native2.default)('View').withConfig({
   displayName: 'ScheduleSelector__Wrapper',
-  componentId: 'sc-10qe3m2-0'
-})(['display:flex;align-items:center;width:100%;user-select:none;']);
+  componentId: 'rpe347-0'
+})(['display:flex;align-items:center;width:100%;']);
 
-var Grid = (0, _styledComponents2.default)('div').withConfig({
+var Grid = (0, _native2.default)('View').withConfig({
   displayName: 'ScheduleSelector__Grid',
-  componentId: 'sc-10qe3m2-1'
+  componentId: 'rpe347-1'
 })(['display:flex;flex-direction:row;align-items:stretch;width:100%;']);
 
-var Column = (0, _styledComponents2.default)('div').withConfig({
+var Column = (0, _native2.default)('View').withConfig({
   displayName: 'ScheduleSelector__Column',
-  componentId: 'sc-10qe3m2-2'
+  componentId: 'rpe347-2'
 })(['display:flex;flex-direction:column;justify-content:space-evenly;flex-grow:1;']);
 
-var GridCell = exports.GridCell = (0, _styledComponents2.default)('div').withConfig({
+var GridCell = exports.GridCell = (0, _native2.default)('View').withConfig({
   displayName: 'ScheduleSelector__GridCell',
-  componentId: 'sc-10qe3m2-3'
+  componentId: 'rpe347-3'
 })(['margin:', 'px;touch-action:none;'], function (props) {
   return props.margin;
 });
 
-var DateCell = (0, _styledComponents2.default)('div').withConfig({
+var DateCell = (0, _native2.default)('View').withConfig({
   displayName: 'ScheduleSelector__DateCell',
-  componentId: 'sc-10qe3m2-4'
+  componentId: 'rpe347-4'
 })(['width:100%;height:25px;background-color:', ';&:hover{background-color:', ';}'], function (props) {
   return props.selected ? props.selectedColor : props.unselectedColor;
 }, function (props) {
   return props.hoveredColor;
 });
 
-var DateLabel = (0, _styledComponents2.default)(_typography.Subtitle).withConfig({
+var DateLabel = (0, _native2.default)(_typography.Subtitle).withConfig({
   displayName: 'ScheduleSelector__DateLabel',
-  componentId: 'sc-10qe3m2-5'
+  componentId: 'rpe347-5'
 })(['height:30px;@media (max-width:699px){font-size:12px;}']);
 
-var TimeLabelCell = (0, _styledComponents2.default)('div').withConfig({
+var TimeLabelCell = (0, _native2.default)('View').withConfig({
   displayName: 'ScheduleSelector__TimeLabelCell',
-  componentId: 'sc-10qe3m2-6'
+  componentId: 'rpe347-6'
 })(['position:relative;display:block;width:100%;height:25px;margin:3px 0;text-align:center;display:flex;justify-content:center;align-items:center;']);
 
-var TimeText = (0, _styledComponents2.default)(_typography.Text).withConfig({
+var TimeText = (0, _native2.default)(_typography.Text).withConfig({
   displayName: 'ScheduleSelector__TimeText',
-  componentId: 'sc-10qe3m2-7'
+  componentId: 'rpe347-7'
 })(['margin:0;@media (max-width:699px){font-size:10px;}text-align:right;']);
 
 var preventScroll = exports.preventScroll = function preventScroll(e) {
@@ -120,19 +118,19 @@ var ScheduleSelector = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, _React$Component.call(this, props));
 
     _this.renderTimeLabels = function () {
-      var labels = [React.createElement(DateLabel, { key: -1 })]; // Ensures time labels start at correct location
+      var labels = [_react2.default.createElement(DateLabel, { key: -1 })]; // Ensures time labels start at correct location
       for (var t = _this.props.minTime; t <= _this.props.maxTime; t += 1) {
-        labels.push(React.createElement(
+        labels.push(_react2.default.createElement(
           TimeLabelCell,
           { key: t },
-          React.createElement(
+          _react2.default.createElement(
             TimeText,
             null,
             formatHour(t)
           )
         ));
       }
-      return React.createElement(
+      return _react2.default.createElement(
         Column,
         { margin: _this.props.margin },
         labels
@@ -140,13 +138,13 @@ var ScheduleSelector = function (_React$Component) {
     };
 
     _this.renderDateColumn = function (dayOfTimes) {
-      return React.createElement(
+      return _react2.default.createElement(
         Column,
         { key: dayOfTimes[0], margin: _this.props.margin },
-        React.createElement(
+        _react2.default.createElement(
           GridCell,
           { margin: _this.props.margin },
-          React.createElement(
+          _react2.default.createElement(
             DateLabel,
             null,
             (0, _format2.default)(dayOfTimes[0], _this.props.dateFormat)
@@ -167,7 +165,7 @@ var ScheduleSelector = function (_React$Component) {
         return (0, _is_same_minute2.default)(a, time);
       }));
 
-      return React.createElement(
+      return _react2.default.createElement(
         GridCell,
         {
           className: 'rgdp__grid-cell',
@@ -201,7 +199,7 @@ var ScheduleSelector = function (_React$Component) {
       if (_this.props.renderDateCell) {
         return _this.props.renderDateCell(time, selected, refSetter);
       } else {
-        return React.createElement(DateCell, {
+        return _react2.default.createElement(DateCell, {
           selected: selected,
           innerRef: refSetter,
           selectedColor: _this.props.selectedColor,
@@ -385,10 +383,10 @@ var ScheduleSelector = function (_React$Component) {
   ScheduleSelector.prototype.render = function render() {
     var _this3 = this;
 
-    return React.createElement(
+    return _react2.default.createElement(
       Wrapper,
       null,
-      React.createElement(
+      _react2.default.createElement(
         Grid,
         {
           innerRef: function innerRef(el) {
@@ -402,7 +400,7 @@ var ScheduleSelector = function (_React$Component) {
   };
 
   return ScheduleSelector;
-}(React.Component);
+}(_react2.default.Component);
 
 ScheduleSelector.defaultProps = {
   selection: [],
