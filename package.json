@@ -1,6 +1,6 @@
 {
   "name": "react-native-schedule-selector",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "description": "A React Native version of the mobile-friendly when2meet-style grid-based schedule selector",
   "repository": {
     "type": "git",
