@@ -1,17 +1,11 @@
 {
   "name": "react-native-schedule-selector",
-  "version": "2.0.6",
+  "version": "2.1.1",
   "description": "A React Native version of the mobile-friendly when2meet-style grid-based schedule selector",
   "repository": {
     "type": "git",
     "url": "https://github.com/edoneyPM/react-schedule-selector.git"
   },
-  "keywords": [
-    "react",
-    "styled-components",
-    "date",
-    "grid"
-  ],
   "main": "dist/lib/index.js",
   "license": "MIT",
   "scripts": {
@@ -23,12 +17,9 @@
     "test": "jest",
     "lib:build": "babel src/lib -d dist/lib"
   },
-  "engines": {
-    "node": ">8.0"
-  },
   "peerDependencies": {
-    "react": ">=15.5 && <=16.0",
-    "styled-components": ">=2.0 || >=3.0"
+    "react": ">=16.0",
+    "styled-components": "^5.1.1"
   },
   "dependencies": {
     "date-fns": "^1.29.0"
@@ -62,15 +53,11 @@
     "jest": "^23.2.0",
     "jest-styled-components": "^6.2.0",
     "jsdom": "^12.0.0",
-    "moment": "^2.22.2",
     "parcel-bundler": "^1.12.4",
     "prettier": "^1.14.2",
     "react": "^16.0.0",
-    "react-dom": "^16.3.2",
-    "react-test-renderer": "^16.4.1",
     "regenerator-runtime": "^0.12.1",
-    "styled-components": "^3.2.6",
-    "surge": "^0.20.1"
+    "styled-components": "^5.1.1"
   },
   "prettier": {
     "singleQuote": true,
