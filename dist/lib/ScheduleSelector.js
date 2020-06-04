@@ -1,15 +1,13 @@
 'use strict';
 
 exports.__esModule = true;
-exports.preventScroll = exports.GridCell = undefined;
+exports.preventScroll = undefined;
 
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _native = require('styled-components/native');
-
-var _native2 = _interopRequireDefault(_native);
+var _reactNative = require('react-native');
 
 var _add_hours = require('date-fns/add_hours');
 
@@ -30,8 +28,6 @@ var _is_same_minute2 = _interopRequireDefault(_is_same_minute);
 var _format = require('date-fns/format');
 
 var _format2 = _interopRequireDefault(_format);
-
-var _typography = require('./typography');
 
 var _colors = require('./colors');
 
@@ -58,52 +54,6 @@ var formatHour = function formatHour(hour) {
   return '' + h + abb;
 };
 
-var Wrapper = (0, _native2.default)('View').withConfig({
-  displayName: 'ScheduleSelector__Wrapper',
-  componentId: 'rpe347-0'
-})(['display:flex;align-items:center;width:100%;']);
-
-var Grid = (0, _native2.default)('View').withConfig({
-  displayName: 'ScheduleSelector__Grid',
-  componentId: 'rpe347-1'
-})(['display:flex;flex-direction:row;align-items:stretch;width:100%;']);
-
-var Column = (0, _native2.default)('View').withConfig({
-  displayName: 'ScheduleSelector__Column',
-  componentId: 'rpe347-2'
-})(['display:flex;flex-direction:column;justify-content:space-evenly;flex-grow:1;']);
-
-var GridCell = exports.GridCell = (0, _native2.default)('View').withConfig({
-  displayName: 'ScheduleSelector__GridCell',
-  componentId: 'rpe347-3'
-})(['margin:', 'px;touch-action:none;'], function (props) {
-  return props.margin;
-});
-
-var DateCell = (0, _native2.default)('View').withConfig({
-  displayName: 'ScheduleSelector__DateCell',
-  componentId: 'rpe347-4'
-})(['width:100%;height:25px;background-color:', ';&:hover{background-color:', ';}'], function (props) {
-  return props.selected ? props.selectedColor : props.unselectedColor;
-}, function (props) {
-  return props.hoveredColor;
-});
-
-var DateLabel = (0, _native2.default)(_typography.Subtitle).withConfig({
-  displayName: 'ScheduleSelector__DateLabel',
-  componentId: 'rpe347-5'
-})(['height:30px;@media (max-width:699px){font-size:12px;}']);
-
-var TimeLabelCell = (0, _native2.default)('View').withConfig({
-  displayName: 'ScheduleSelector__TimeLabelCell',
-  componentId: 'rpe347-6'
-})(['position:relative;display:block;width:100%;height:25px;margin:3px 0;text-align:center;display:flex;justify-content:center;align-items:center;']);
-
-var TimeText = (0, _native2.default)(_typography.Text).withConfig({
-  displayName: 'ScheduleSelector__TimeText',
-  componentId: 'rpe347-7'
-})(['margin:0;@media (max-width:699px){font-size:10px;}text-align:right;']);
-
 var preventScroll = exports.preventScroll = function preventScroll(e) {
   e.preventDefault();
 };
@@ -118,35 +68,52 @@ var ScheduleSelector = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, _React$Component.call(this, props));
 
     _this.renderTimeLabels = function () {
-      var labels = [_react2.default.createElement(DateLabel, { key: -1 })]; // Ensures time labels start at correct location
+      var labels = [_react2.default.createElement(_reactNative.Text, { style: { fontSize: 12, fontWeight: '400', color: _colors2.default.black, height: 30, textAlign: 'center' }, key: -1 })]; // Ensures time labels start at correct location
       for (var t = _this.props.minTime; t <= _this.props.maxTime; t += 1) {
+        var _ref;
+
         labels.push(_react2.default.createElement(
-          TimeLabelCell,
-          { key: t },
+          _reactNative.View,
+          { style: (_ref = {
+              position: 'relative',
+              display: 'block',
+              width: '100%',
+              height: 25,
+              marginTop: 3,
+              marginBottom: 3,
+              textAlign: 'center'
+            }, _ref['display'] = 'flex', _ref.justifyContent = 'center', _ref.alignItems = 'center', _ref), key: t },
           _react2.default.createElement(
-            TimeText,
-            null,
+            _reactNative.Text,
+            { style: {
+                fontSize: 12,
+                fontWeight: '300',
+                lineHeight: 14 * 1.37,
+                color: _colors2.default.grey,
+                margin: 0,
+                textAlign: 'right'
+              } },
             formatHour(t)
           )
         ));
       }
       return _react2.default.createElement(
-        Column,
-        { margin: _this.props.margin },
+        _reactNative.View,
+        { style: { display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', flexGrow: 1 }, margin: _this.props.margin },
         labels
       );
     };
 
     _this.renderDateColumn = function (dayOfTimes) {
       return _react2.default.createElement(
-        Column,
-        { key: dayOfTimes[0], margin: _this.props.margin },
+        _reactNative.View,
+        { style: { display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', flexGrow: 1 }, key: dayOfTimes[0], margin: _this.props.margin },
         _react2.default.createElement(
-          GridCell,
-          { margin: _this.props.margin },
+          _reactNative.View,
+          { style: { margin: _this.props.margin, touchAction: 'none' } },
           _react2.default.createElement(
-            DateLabel,
-            null,
+            _reactNative.Text,
+            { style: { fontSize: 12, fontWeight: '400', color: _colors2.default.black, height: 30, textAlign: 'center' } },
             (0, _format2.default)(dayOfTimes[0], _this.props.dateFormat)
           )
         ),
@@ -157,6 +124,8 @@ var ScheduleSelector = function (_React$Component) {
     };
 
     _this.renderDateCellWrapper = function (time) {
+      var _React$createElement;
+
       var startHandler = function startHandler() {
         _this.handleSelectionStartEvent(time);
       };
@@ -166,28 +135,23 @@ var ScheduleSelector = function (_React$Component) {
       }));
 
       return _react2.default.createElement(
-        GridCell,
-        {
+        _reactNative.View,
+        (_React$createElement = {
+          style: { margin: _this.props.margin, touchAction: 'none' },
           className: 'rgdp__grid-cell',
           role: 'presentation',
-          margin: _this.props.margin,
-          key: time.toISOString()
-          // Mouse handlers
-          , onMouseDown: startHandler,
-          onMouseEnter: function onMouseEnter() {
-            _this.handleMouseEnterEvent(time);
+          key: time.toISOString(),
+          onResponderGrant: startHandler,
+          onStartShouldSetResponder: function onStartShouldSetResponder(ev) {
+            return true;
           },
-          onMouseUp: function onMouseUp() {
-            _this.handleMouseUpEvent(time);
+          onMoveShouldSetResponder: function onMoveShouldSetResponder(ev) {
+            return true;
+          },
+          onResponderTerminationRequest: function onResponderTerminationRequest(ev) {
+            return true;
           }
-          // Touch handlers
-          // Since touch events fire on the event where the touch-drag started, there's no point in passing
-          // in the time parameter, instead these handlers will do their job using the default SyntheticEvent
-          // parameters
-          , onTouchStart: startHandler,
-          onTouchMove: _this.handleTouchMoveEvent,
-          onTouchEnd: _this.handleTouchEndEvent
-        },
+        }, _React$createElement['onResponderGrant'] = _this.handleTouchMoveEvent.bind(_this, "onResponderGrant"), _React$createElement.onResponderReject = _this.handleTouchMoveEvent.bind(_this, "onResponderReject"), _React$createElement.onResponderMove = _this.handleTouchMoveEvent.bind(_this, "onResponderMove"), _React$createElement.onResponderRelease = _this.handleTouchMoveEvent.bind(_this, "onResponderRelease"), _React$createElement.onResponderTerminate = _this.handleTouchMoveEvent.bind(_this, "onResponderTerminate"), _React$createElement),
         _this.renderDateCell(time, selected)
       );
     };
@@ -199,12 +163,9 @@ var ScheduleSelector = function (_React$Component) {
       if (_this.props.renderDateCell) {
         return _this.props.renderDateCell(time, selected, refSetter);
       } else {
-        return _react2.default.createElement(DateCell, {
-          selected: selected,
-          innerRef: refSetter,
-          selectedColor: _this.props.selectedColor,
-          unselectedColor: _this.props.unselectedColor,
-          hoveredColor: _this.props.hoveredColor
+        return _react2.default.createElement(_reactNative.View, {
+          style: { width: '100%', height: 25, backgroundColor: selected ? _this.props.selectedColor : _this.props.unselectedColor },
+          innerRef: refSetter
         });
       }
     };
@@ -233,9 +194,6 @@ var ScheduleSelector = function (_React$Component) {
     };
 
     _this.endSelection = _this.endSelection.bind(_this);
-    _this.handleMouseUpEvent = _this.handleMouseUpEvent.bind(_this);
-    _this.handleMouseEnterEvent = _this.handleMouseEnterEvent.bind(_this);
-    _this.handleTouchMoveEvent = _this.handleTouchMoveEvent.bind(_this);
     _this.handleTouchEndEvent = _this.handleTouchEndEvent.bind(_this);
     _this.handleSelectionStartEvent = _this.handleSelectionStartEvent.bind(_this);
     return _this;
@@ -248,7 +206,7 @@ var ScheduleSelector = function (_React$Component) {
     //
     // This isn't necessary for touch events since the `touchend` event fires on
     // the element where the touch/drag started so it's always caught.
-    document.addEventListener('mouseup', this.endSelection);
+    // document.addEventListener('mouseup', this.endSelection)
 
     // Prevent page scrolling when user is dragging on the date cells
     this.cellToDate.forEach(function (value, dateCell) {
@@ -259,7 +217,7 @@ var ScheduleSelector = function (_React$Component) {
   };
 
   ScheduleSelector.prototype.componentWillUnmount = function componentWillUnmount() {
-    document.removeEventListener('mouseup', this.endSelection);
+    // document.removeEventListener('mouseup', this.endSelection)
     this.cellToDate.forEach(function (value, dateCell) {
       if (dateCell && dateCell.removeEventListener) {
         dateCell.removeEventListener('touchmove', preventScroll);
@@ -286,9 +244,10 @@ var ScheduleSelector = function (_React$Component) {
         clientX = _touches$.clientX,
         clientY = _touches$.clientY;
 
-    var targetElement = document.elementFromPoint(clientX, clientY);
-    var cellTime = this.cellToDate.get(targetElement);
-    return cellTime;
+    console.log({ clientX: clientX, clientY: clientY });
+    // const targetElement = document.elementFromPoint(clientX, clientY)
+    // const cellTime = this.cellToDate.get(targetElement)
+    // return cellTime
   };
 
   ScheduleSelector.prototype.endSelection = function endSelection() {
@@ -344,19 +303,8 @@ var ScheduleSelector = function (_React$Component) {
     });
   };
 
-  ScheduleSelector.prototype.handleMouseEnterEvent = function handleMouseEnterEvent(time) {
-    // Need to update selection draft on mouseup as well in order to catch the cases
-    // where the user just clicks on a single cell (because no mouseenter events fire
-    // in this scenario)
-    this.updateAvailabilityDraft(time);
-  };
-
-  ScheduleSelector.prototype.handleMouseUpEvent = function handleMouseUpEvent(time) {
-    this.updateAvailabilityDraft(time);
-    // Don't call this.endSelection() here because the document mouseup handler will do it
-  };
-
-  ScheduleSelector.prototype.handleTouchMoveEvent = function handleTouchMoveEvent(event) {
+  ScheduleSelector.prototype.handleTouchMoveEvent = function handleTouchMoveEvent(name, event) {
+    console.log('[' + name + '] ' + ('root_x: ' + event.nativeEvent.pageX + ', root_y: ' + event.nativeEvent.pageY + ' ') + ('target_x: ' + event.nativeEvent.locationX + ', target_y: ' + event.nativeEvent.locationY + ' ') + ('target: ' + event.nativeEvent.target));
     this.setState({ isTouchDragging: true });
     var cellTime = this.getTimeFromTouchEvent(event);
     if (cellTime) {
@@ -384,11 +332,17 @@ var ScheduleSelector = function (_React$Component) {
     var _this3 = this;
 
     return _react2.default.createElement(
-      Wrapper,
-      null,
+      _reactNative.View,
+      { style: { display: 'flex', alignItems: 'center', width: '100%' } },
       _react2.default.createElement(
-        Grid,
+        _reactNative.View,
         {
+          style: {
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'stretch',
+            width: '100%'
+          },
           innerRef: function innerRef(el) {
             _this3.gridRef = el;
           }

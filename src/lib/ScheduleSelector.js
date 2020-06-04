@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components/native'
+import { View, Text } from 'react-native'
 
 // Import only the methods we need from date-fns in order to keep build size small
 import addHours from 'date-fns/add_hours'
@@ -8,7 +8,6 @@ import startOfDay from 'date-fns/start_of_day'
 import isSameMinute from 'date-fns/is_same_minute'
 import formatDate from 'date-fns/format'
 
-import { Text, Subtitle } from './typography'
 import colors from './colors'
 import selectionSchemes from './selection-schemes'
 
@@ -17,68 +16,6 @@ const formatHour = (hour) => {
   const abb = hour < 12 || hour === 24 ? 'am' : 'pm'
   return `${h}${abb}`
 }
-
-const Wrapper = styled.View`
-  display: flex;
-  align-items: center;
-  width: 100%;
-`
-
-const Grid = styled.View`
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  width: 100%;
-`
-
-const Column = styled.View`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  flex-grow: 1;
-`
-
-export const GridCell = styled.View`
-  margin: ${props => props.margin}px;
-  touch-action: none;
-`
-
-const DateCell = styled.View`
-  width: 100%;
-  height: 25px;
-  background-color: ${props => (props.selected ? props.selectedColor : props.unselectedColor)};
-
-  &:hover {
-    background-color: ${props => props.hoveredColor};
-  }
-`
-
-const DateLabel = styled(Subtitle)`
-  height: 30px;
-  @media (max-width: 699px) {
-    font-size: 12px;
-  }
-`
-
-const TimeLabelCell = styled.View`
-  position: relative;
-  display: block;
-  width: 100%;
-  height: 25px;
-  margin: 3px 0;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
-
-const TimeText = styled(Text)`
-  margin: 0;
-  @media (max-width: 699px) {
-    font-size: 10px;
-  }
-  text-align: right;
-`
 
 type PropsType = {
   selection: Array<Date>,
@@ -165,9 +102,6 @@ export default class ScheduleSelector extends React.Component<PropsType, StateTy
     }
 
     this.endSelection = this.endSelection.bind(this)
-    this.handleMouseUpEvent = this.handleMouseUpEvent.bind(this)
-    this.handleMouseEnterEvent = this.handleMouseEnterEvent.bind(this)
-    this.handleTouchMoveEvent = this.handleTouchMoveEvent.bind(this)
     this.handleTouchEndEvent = this.handleTouchEndEvent.bind(this)
     this.handleSelectionStartEvent = this.handleSelectionStartEvent.bind(this)
   }
@@ -179,7 +113,7 @@ export default class ScheduleSelector extends React.Component<PropsType, StateTy
     //
     // This isn't necessary for touch events since the `touchend` event fires on
     // the element where the touch/drag started so it's always caught.
-    document.addEventListener('mouseup', this.endSelection)
+    // document.addEventListener('mouseup', this.endSelection)
 
     // Prevent page scrolling when user is dragging on the date cells
     this.cellToDate.forEach((value, dateCell) => {
@@ -190,7 +124,7 @@ export default class ScheduleSelector extends React.Component<PropsType, StateTy
   }
 
   componentWillUnmount() {
-    document.removeEventListener('mouseup', this.endSelection)
+    // document.removeEventListener('mouseup', this.endSelection)
     this.cellToDate.forEach((value, dateCell) => {
       if (dateCell && dateCell.removeEventListener) {
         dateCell.removeEventListener('touchmove', preventScroll)
@@ -211,9 +145,10 @@ export default class ScheduleSelector extends React.Component<PropsType, StateTy
     const { touches } = event
     if (!touches || touches.length === 0) return null
     const { clientX, clientY } = touches[0]
-    const targetElement = document.elementFromPoint(clientX, clientY)
-    const cellTime = this.cellToDate.get(targetElement)
-    return cellTime
+    console.log({ clientX, clientY })
+    // const targetElement = document.elementFromPoint(clientX, clientY)
+    // const cellTime = this.cellToDate.get(targetElement)
+    // return cellTime
   }
 
   endSelection() {
@@ -256,19 +191,13 @@ export default class ScheduleSelector extends React.Component<PropsType, StateTy
     })
   }
 
-  handleMouseEnterEvent(time: Date) {
-    // Need to update selection draft on mouseup as well in order to catch the cases
-    // where the user just clicks on a single cell (because no mouseenter events fire
-    // in this scenario)
-    this.updateAvailabilityDraft(time)
-  }
-
-  handleMouseUpEvent(time: Date) {
-    this.updateAvailabilityDraft(time)
-    // Don't call this.endSelection() here because the document mouseup handler will do it
-  }
-
-  handleTouchMoveEvent(event: SyntheticTouchEvent<*>) {
+  handleTouchMoveEvent(name, event) {
+    console.log(
+      `[${name}] ` + 
+      `root_x: ${event.nativeEvent.pageX}, root_y: ${event.nativeEvent.pageY} ` +
+      `target_x: ${event.nativeEvent.locationX}, target_y: ${event.nativeEvent.locationY} ` + 
+      `target: ${event.nativeEvent.target}`
+    )
     this.setState({ isTouchDragging: true })
     const cellTime = this.getTimeFromTouchEvent(event)
     if (cellTime) {
@@ -291,24 +220,42 @@ export default class ScheduleSelector extends React.Component<PropsType, StateTy
   }
 
   renderTimeLabels = (): React.Element<*> => {
-    const labels = [<DateLabel key={-1} />] // Ensures time labels start at correct location
+    const labels = [<Text style={{ fontSize: 12, fontWeight: '400', color: colors.black, height: 30, textAlign: 'center' }} key={-1} />] // Ensures time labels start at correct location
     for (let t = this.props.minTime; t <= this.props.maxTime; t += 1) {
       labels.push(
-        <TimeLabelCell key={t}>
-          <TimeText>{formatHour(t)}</TimeText>
-        </TimeLabelCell>
+        <View style={{
+          position: 'relative',
+          display: 'block',
+          width: '100%',
+          height: 25,
+          marginTop: 3,
+          marginBottom: 3,
+          textAlign: 'center',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }} key={t}>
+          <Text style={{
+            fontSize: 12,
+            fontWeight: '300',
+            lineHeight: 14 * 1.37,
+            color: colors.grey,
+            margin: 0,
+            textAlign: 'right'
+          }}>{formatHour(t)}</Text>
+        </View>
       )
     }
-    return <Column margin={this.props.margin}>{labels}</Column>
+    return <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', flexGrow: 1 }} margin={this.props.margin}>{labels}</View>
   }
 
   renderDateColumn = (dayOfTimes: Array<Date>) => (
-    <Column key={dayOfTimes[0]} margin={this.props.margin}>
-      <GridCell margin={this.props.margin}>
-        <DateLabel>{formatDate(dayOfTimes[0], this.props.dateFormat)}</DateLabel>
-      </GridCell>
+    <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', flexGrow: 1 }} key={dayOfTimes[0]} margin={this.props.margin}>
+      <View style={{ margin: this.props.margin, touchAction: 'none' }}>
+        <Text style={{ fontSize: 12, fontWeight: '400', color: colors.black, height: 30, textAlign: 'center' }}>{formatDate(dayOfTimes[0], this.props.dateFormat)}</Text>
+      </View>
       {dayOfTimes.map(time => this.renderDateCellWrapper(time))}
-    </Column>
+    </View>
   )
 
   renderDateCellWrapper = (time: Date): React.Element<*> => {
@@ -319,29 +266,26 @@ export default class ScheduleSelector extends React.Component<PropsType, StateTy
     const selected = Boolean(this.state.selectionDraft.find(a => isSameMinute(a, time)))
 
     return (
-      <GridCell
+      <View
+        style={{ margin: this.props.margin, touchAction: 'none' }}
         className="rgdp__grid-cell"
         role="presentation"
-        margin={this.props.margin}
         key={time.toISOString()}
-        // Mouse handlers
-        onMouseDown={startHandler}
-        onMouseEnter={() => {
-          this.handleMouseEnterEvent(time)
-        }}
-        onMouseUp={() => {
-          this.handleMouseUpEvent(time)
-        }}
-        // Touch handlers
-        // Since touch events fire on the event where the touch-drag started, there's no point in passing
-        // in the time parameter, instead these handlers will do their job using the default SyntheticEvent
-        // parameters
-        onTouchStart={startHandler}
-        onTouchMove={this.handleTouchMoveEvent}
-        onTouchEnd={this.handleTouchEndEvent}
+        onResponderGrant={startHandler}
+        onStartShouldSetResponder={(ev) => true}
+        onMoveShouldSetResponder={(ev) => true}
+        onResponderTerminationRequest={(ev) => true}
+        onResponderGrant={this.handleTouchMoveEvent.bind(this, "onResponderGrant")}
+        onResponderReject={this.handleTouchMoveEvent.bind(this, "onResponderReject")}
+        onResponderMove={this.handleTouchMoveEvent.bind(this, "onResponderMove")}
+        onResponderRelease={this.handleTouchMoveEvent.bind(this, "onResponderRelease")}
+        onResponderTerminate={this.handleTouchMoveEvent.bind(this, "onResponderTerminate")}
+        // onTouchStart={startHandler}
+        // onTouchMove={this.handleTouchMoveEvent}
+        // onTouchEnd={this.handleTouchEndEvent}
       >
         {this.renderDateCell(time, selected)}
-      </GridCell>
+      </View>
     )
   }
 
@@ -353,12 +297,9 @@ export default class ScheduleSelector extends React.Component<PropsType, StateTy
       return this.props.renderDateCell(time, selected, refSetter)
     } else {
       return (
-        <DateCell
-          selected={selected}
+        <View
+          style={{ width: '100%', height: 25, backgroundColor: selected ? this.props.selectedColor : this.props.unselectedColor}}
           innerRef={refSetter}
-          selectedColor={this.props.selectedColor}
-          unselectedColor={this.props.unselectedColor}
-          hoveredColor={this.props.hoveredColor}
         />
       )
     }
@@ -366,18 +307,24 @@ export default class ScheduleSelector extends React.Component<PropsType, StateTy
 
   render(): React.Element<*> {
     return (
-      <Wrapper>
+      <View style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
         {
-          <Grid
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'stretch',
+              width: '100%'
+            }}
             innerRef={el => {
               this.gridRef = el
             }}
           >
             {this.renderTimeLabels()}
             {this.dates.map(this.renderDateColumn)}
-          </Grid>
+          </View>
         }
-      </Wrapper>
+      </View>
     )
   }
 }
